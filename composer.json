@@ -1,0 +1,26 @@
+{
+    "name": "pixelboii/vague",
+    "description": "Admin Panel for Laravel",
+    "authors": [
+        {
+            "name": "Pixel",
+            "email": "pixel@statsanytime.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PixelBoii\\Vague\\": "src"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "inertiajs/inertia-laravel": "^0.4.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PixelBoii\\Vague\\VagueServiceProvider"
+            ]
+        }
+    }
+}
