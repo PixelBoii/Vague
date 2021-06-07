@@ -20,8 +20,17 @@ class ResourceRecords extends Element
 
         $this->attributes['fields'] = $fields;
         $this->attributes['actions'] = $resource->actionsForRoute('table');
-        $this->attributes['records'] = $records;
         $this->attributes['slug'] = $resource->slug();
         $this->attributes['filters'] = $request->all('search', 'order', 'sortBy');
+
+        $this->attributes['records'] = [
+            'links' => $records->links(),
+            'data' => $records->items()->map(function($item) use($resource) {
+                return [
+                    'data' => $item,
+                    'fields' => $resource->resolveFields($item)
+                ];
+            })
+        ];
     }
 }
