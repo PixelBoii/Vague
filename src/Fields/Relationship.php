@@ -14,12 +14,7 @@ class Relationship extends Field
 
     public function __construct($relationship, $targetKey = null)
     {
-        if (is_null($targetKey)) {
-            $this->column = $relationship->foreignKey ?? Str::snake($relationship->target()->slug()) . '_id';
-        } else {
-            $this->column = $targetKey;
-        }
-
+        $this->column = $targetKey;
         $this->name = $relationship->target()->name();
         $this->relationship = $relationship;
     }

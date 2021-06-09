@@ -25,11 +25,7 @@ class ResourceController extends Controller
         $fields = $resource->resolveFields();
         $actions = $resource->actionsForRoute('table');
 
-        $query = $resource->model()->orderBy($sortBy, $sortOrder)->where(function($query) use($fields, $search) {
-            foreach ($fields as $field) {
-                $query->orWhere($field->column, 'LIKE', '%' . $search . '%');
-            }
-        });
+        $query = $resource->model()->orderBy($sortBy, $sortOrder)->where(fn($query) => $resource->search($query, $search));
 
         $breadcrumbs = Breadcrumbs::make()->add('', 'Resource')->newRoot('resource')->add($resource->slug(), $resource->name());
         $results = $query->paginate();

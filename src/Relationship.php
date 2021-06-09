@@ -102,23 +102,11 @@ class Relationship
         $search = $request->get('search') ?? '';
         $sortOrder = $request->get('order') ?? 'DESC';
 
-        $query->orderBy($sortBy, $sortOrder)->where(function($query) use($fields, $search) {
-            foreach ($fields as $field) {
-                $query->orWhere($field->column, 'LIKE', '%' . $search . '%');
-            }
-        });
-
-        $records = $query->paginate();
-
-        if ($records->count() > 0) {
-            $response = Element::resourceRecords($this->target(), $records);
-        } else {
-            $response = Element::text('Records not found');
-        }
+        $query->orderBy($sortBy, $sortOrder)->where(fn($query) => $this->target()->search($query, $search));
 
         return Element::div([
             Element::subText($this->target()->name()),
-            $response
+            Element::resourceRecords($this->target(), $query->paginate())
         ]);
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 use PixelBoii\Vague\Element;
+use PixelBoii\Vague\Relationship;
 use PixelBoii\Vague\ResourceFields;
 use PixelBoii\Vague\ResourceActions;
 
@@ -73,6 +74,39 @@ class Resource
             ])->class('space-y-2');
         } else {
             return Element::recordForm($this, $record);
+        }
+    }
+
+    public function search($query, $search)
+    {
+        foreach ($this->resolveFields() as $field) {
+            if ($field->casts == 'relationship') {
+                if (!method_exists($this->model(), $field->relationship->target()::slug())) {
+                    $this->model()->resolveRelationUsing($field->relationship->target()::slug(), fn($model) => $field->relationship->buildRelationship($model));
+                }
+
+                $target_fields = array_values(array_filter($field->relationship->target()->resolveFields(), fn($field) => $field->casts != 'relationship'));
+
+                // Ignore relationships without any defined fields
+                if (count($target_fields) > 0) {
+                    $query->orWhereHas($field->relationship->target()::slug(), function($q) use($target_fields, $search) {
+                        $q->where(function($q) use($target_fields, $search) {
+                            foreach ($target_fields as $field) {
+                                $q->orWhere($field->column, 'LIKE', '%' . $search . '%');
+                            }
+                        });
+                    });
+                }
+            } else {
+                $query->orWhere($field->column, 'LIKE', '%' . $search . '%');
+            }
+        }
+    }
+
+    public function __call($name, $args)
+    {
+        if (in_array(strtolower($name), ['belongsto', 'belongstomany', 'hasmany', 'hasmanythrough', 'hasone'])) {
+            return Relationship::$name(...$args);
         }
     }
 
