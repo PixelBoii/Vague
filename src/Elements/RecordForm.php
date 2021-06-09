@@ -16,7 +16,7 @@ class RecordForm extends Element
     public function __construct($resource, $record)
     {
         $this->attributes['record'] = $record;
-        $this->attributes['fields'] = array_filter($resource->resolveFields($record), fn($field) => $field->displayOnForm);
+        $this->attributes['fields'] = array_values(array_filter($resource->resolveFields($record), fn($field) => $field->displayOnForm));
         $this->attributes['actions'] = $resource->actionsForRoute('recordForm');
     }
 }
