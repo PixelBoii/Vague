@@ -34,7 +34,7 @@
 
         <ResourceBuilder :element="field.element" class="mt-2" v-else-if="field.casts == 'relationship'" />
 
-        <Input :type="field.casts" :modelValue="value" @update:modelValue="handle" v-else />
+        <Input :type="field.casts" :modelValue="value" @update:modelValue="handle" class="w-full" v-else />
     </div>
 </template>
 

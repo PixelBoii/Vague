@@ -3,7 +3,7 @@
         <div class="flex items-end justify-between">
             <div>
                 <Label> Search </Label>
-                <Input type="text" class="w-72" v-model="table.search" />
+                <Input type="text" class="w-72" v-model="table.search" ref="search" tabindex="-1" @keydown.enter="refreshRecords()" />
             </div>
 
             <div class="flex items-center space-x-2 z-10">
@@ -53,23 +53,27 @@
 
             <template v-slot:tbody>
                 <tr v-for="record in records.data" :key="record.id" class="hover:bg-gray-50 transition duration-75">
-                    <td class="whitespace-nowrap pl-6 py-4" @click="record.selected = !record.selected">
+                    <td class="whitespace-nowrap pl-6 pr-3 py-4" @click="record.selected = !record.selected">
                         <CheckCircleIcon class="stroke-current h-6 w-6" :class="[record.selected ? 'text-green-500' : 'text-gray-400']" />
                     </td>
 
                     <td v-for="field in record.fields" :key="`record-${record.data.id}-${field.column}`" class="whitespace-nowrap">
-                        <inertia-link :href="`/vague/resource/${slug}/${record.data.id}`" class="px-6 py-4">
-                            <ResourceBuilder :element="field.element" v-if="field.casts == 'relationship'" />
+                        <inertia-link :href="`/vague/resource/${slug}/${record.data.id}`" class="inline-block h-full">
+                            <div class="px-6 py-4 h-full">
+                                <ResourceBuilder :element="field.element" v-if="field.casts == 'relationship'" />
 
-                            <span class="text-sm font-medium text-gray-900" v-else> {{ record.data[field.column] }} </span>
+                                <span class="text-sm font-medium text-gray-900" v-else> {{ record.data[field.column] }} </span>
+                            </div>
                         </inertia-link>
                     </td>
 
                     <td class="whitespace-nowrap text-sm font-medium">
-                        <inertia-link :href="`/vague/resource/${slug}/${record.data.id}`" class="text-gray-400 px-6 py-4 flex items-center justify-end">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 h-6 fill-current">
-                                <polygon points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707"></polygon>
-                            </svg>
+                        <inertia-link :href="`/vague/resource/${slug}/${record.data.id}`">
+                            <div class="px-6 py-4 text-gray-400 flex items-center justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 h-6 fill-current">
+                                    <polygon points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707"></polygon>
+                                </svg>
+                            </div>
                         </inertia-link>
                     </td>
                 </tr>
@@ -128,9 +132,12 @@ export default {
         table: {
             deep: true,
             handler: debounce(function(data) {
-                this.$inertia.get(window.location.pathname, pickBy(data), { preserveState: true, preserveScroll: true, only: ['records', 'filters', 'elements'] })
-            }, 150)
+                this.refreshRecords(data);
+            }, 350)
         }
+    },
+    mounted() {
+        this.$refs.search.$el.focus();
     },
     methods: {
         handleSortClick(column) {
@@ -151,6 +158,13 @@ export default {
             this.$inertia.post(`${window.location.pathname}/${action}`, {
                 records: this.records.data.filter(e => e.selected).map(e => e.id)
             });
+        },
+        refreshRecords(data = null) {
+            if (!data) {
+                data = this.table;
+            }
+
+            this.$inertia.get(window.location.pathname, pickBy(data), { preserveState: true, preserveScroll: true });
         }
     }
 }
