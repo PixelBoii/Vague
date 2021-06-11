@@ -8,9 +8,12 @@ use JsonSerializable;
 class Element implements JsonSerializable
 {
     public $content = [];
+
     public $attributes = [
         'class' => []
     ];
+
+    public $meta = [];
 
     public function __construct($content = [])
     {
@@ -25,9 +28,14 @@ class Element implements JsonSerializable
     {
         return [
             'attributes' => $this->getAttributes(),
-            'content' => $this->content,
+            'content' => $this->render(),
             'tag' => $this->tag
         ];
+    }
+
+    public function render()
+    {
+        return $this->content;
     }
 
     public function getAttributes()
@@ -86,6 +94,15 @@ class Element implements JsonSerializable
         $this->attributes['class'] = [];
 
         return $this->class($class);
+    }
+
+    public function meta($meta)
+    {
+        foreach ($meta as $key => $value) {
+            $this->meta[$key] = $value;
+        }
+
+        return $this;
     }
 
     /**
