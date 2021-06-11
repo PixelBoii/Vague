@@ -32,7 +32,7 @@ class Relationship
         return new $this->target();
     }
 
-    private function summaryForItem($item, $fn)
+    public function summaryForItem($item, $fn = null)
     {
         $summary = $this->target()->summary($item);
 
@@ -43,46 +43,9 @@ class Relationship
         }
     }
 
-    public function summary($record, $displayTitle = true, $limit = 5, $fn = null)
+    public function summary(...$args)
     {
-        $query = $this->query($record)->latest();
-
-        if ($this->type == 'single') {
-            $record = $query->first();
-
-            if (isset($record)) {
-                $summary = $this->summaryForItem($record, $fn);
-            } else {
-                $summary = Element::text('No records found.');
-            }
-        } else if ($this->type == 'many') {
-            $records = $query->limit($limit)->get();
-
-            if ($records->count() > 0) {
-                $summary = Element::div(
-                    $records->reduce(function($records, $item) use($fn) {
-                        $result = $this->summaryForItem($item, $fn);
-
-                        if (isset($result)) {
-                            return [...$records, $result];
-                        } else {
-                            return $records;
-                        }
-                    }, [])
-                )->class('space-y-2');
-            } else {
-                $summary = Element::text('No records found.');
-            }
-        }
-
-        if ($displayTitle) {
-            return Element::div([
-                Element::subText($this->target()->name()),
-                $summary,
-            ])->class('space-y-2');
-        } else {
-            return $summary;
-        }
+        return Element::relationship($this, ...$args);
     }
 
     public function table($record)

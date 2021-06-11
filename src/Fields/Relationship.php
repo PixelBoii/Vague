@@ -21,6 +21,6 @@ class Relationship extends Field
 
     public function onRender($record)
     {
-        $this->element = $this->relationship->summary($record, false);
+        $this->element = $this->relationship->summary($record)->hideTitle();
     }
 }
