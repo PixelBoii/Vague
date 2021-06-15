@@ -9,11 +9,6 @@ use PixelBoii\Vague\Relationship;
 class DummyClass extends Resource
 {
     /**
-     * Model related to resource
-    */ 
-    public static $model = null;
-
-    /**
      * The fields that should be searchable via the navigation bar
     */
     public static $searchable = [
