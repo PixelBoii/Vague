@@ -16,6 +16,9 @@ class Action
         'table' => true
     ];
 
+    public $confirmation = false;
+    public $modal;
+
     public function primary()
     {
         $this->element = Element::PrimaryButton($this->name);
@@ -45,5 +48,22 @@ class Action
     public function element($element)
     {
         $this->element = $element;
+    }
+
+    public function confirmation($fn = null)
+    {
+        $this->confirmation = true;
+        $this->modal = new Modal($this);
+
+        $this->modal->body([
+            Element::text('Perform ' . $this->name)->setClass('text-lg font-medium'),
+            Element::text("This is just a confirmation window, don't worry about it.")->setClass('mt-2 text-base font-medium text-gray-500'),
+        ]);
+
+        if (isset($fn) && is_callable($fn)) {
+            $fn($this->modal);
+        }
+
+        return $this;
     }
 }
