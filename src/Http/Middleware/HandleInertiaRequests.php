@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             'quickSearch.results' => fn () => array_reduce(config('vague.resources'), function($resources, $resource) use($request) {
                 $search = $request->get('quickSearch') ?? '';
 
-                $records = $resource::$model::where(function($query) use($search, $resource) {
+                $records = $resource::make()->model()->where(function($query) use($search, $resource) {
                     $fields = $resource::$searchable ?? array_map(fn($field) => $field->column, $resource::make()->resolveFields());
 
                     foreach ($fields as $field) {
