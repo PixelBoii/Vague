@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 class Field
 {
     public $displayOnForm = true;
+    public $fillable = true;
+    public $nullable = false;
     public $columnSpan = 6;
 
     public $column;
@@ -29,6 +31,20 @@ class Field
     public function displayOnForm()
     {
         $this->displayOnForm = true;
+
+        return $this;
+    }
+
+    public function span($span)
+    {
+        $this->columnSpan = $span;
+
+        return $this;
+    }
+
+    public function nullable()
+    {
+        $this->nullable = true;
 
         return $this;
     }
