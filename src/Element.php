@@ -42,15 +42,17 @@ class Element implements JsonSerializable
     {
         $attributes = $this->attributes;
 
-        foreach (array_keys($attributes) as $attribute_key) {
+        return array_reduce(array_keys($attributes), function($result, $attribute_key) use($attributes) {
             $method_guess = 'get' . Str::ucfirst($attribute_key);
 
-            if (method_exists($this, $method_guess)) {
-                $attributes[$attribute_key] = $this->$method_guess();
-            }
-        }
+            $result[$attribute_key] = method_exists($this, $method_guess) ? $this->$method_guess() : $attributes[$attribute_key];
 
-        return $attributes;
+            if (empty($result[$attribute_key])) {
+                unset($result[$attribute_key]);
+            }
+
+            return $result;
+        }, []);
     }
 
     public function getClass()
