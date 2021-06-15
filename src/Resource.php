@@ -56,6 +56,11 @@ class Resource implements JsonSerializable
                 }, [])
             )
         );
+
+        return redirect()->route('vague.record.index', [
+            'resource' => $resource->slug(),
+            'record' => $record->id
+        ]);
     }
 
     public function delete(Request $request, $resource, $record)

@@ -30,19 +30,15 @@ class RecordController extends Controller
 
         $actions = $resource->resolveActions();
 
+        if ($action_query == 'delete') {
+            return $resource->delete($request, $resource, $record);
+        }
+
+        if ($action_query == 'save') {
+            return $resource->save($request, $resource, $record);
+        }
+
         foreach ($actions as $action) {
-            if ($action_query == 'delete') {
-                $resource->delete($request, $resource, $record);
-
-                continue;
-            }
-
-            if ($action_query == 'save') {
-                $resource->save($request, $resource, $record);
-
-                continue;
-            }
-
             if ($action->id == $action_query) {
                 $res = call_user_func($action->method, $request, $resource, $record);
 
