@@ -1,4 +1,20 @@
 <template>
+    <Modal v-model:show="modals.create.show" width="xl">
+        <template #content>
+            <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Create Record </DialogTitle>
+
+            <div class="mt-2 grid grid-cols-12 gap-6">
+                <EditField
+                    v-model="form[field.column]"
+                    v-for="field in fillableFields"
+                    :field="field"
+                    :key="field.column"
+                    :style="`grid-column: span ${field.columnSpan ?? 6} / span ${field.columnSpan ?? 6}`"
+                />
+            </div>
+        </template>
+    </Modal>
+
     <div class="space-y-3">
         <div class="flex items-end justify-between">
             <div>
@@ -7,9 +23,9 @@
             </div>
 
             <div class="flex items-center space-x-2 z-10">
-                <PrimaryButton> Create New </PrimaryButton>
+                <PrimaryButton @click="modals.create.show = true"> Create New </PrimaryButton>
 
-                <Menu as="div" class="relative inline-block text-left" v-if="actions.length > 0">
+                <Menu as="div" class="relative inline-block text-left" v-if="actions?.length > 0">
                     <div>
                         <MenuButton class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                             Actions
@@ -87,12 +103,15 @@
 <script>
 import Table from './Table';
 import Pagination from './Pagination';
-import PrimaryButton from '../Components/PrimaryButton';
-import Input from '../Components/Input';
-import Label from '../Components/Label';
+import Modal from './Modal';
+import PrimaryButton from './PrimaryButton';
+import Input from './Input';
+import Label from './Label';
+import EditField from './EditField';
 
 import CheckCircleIcon from '@heroicons/vue/outline/CheckCircleIcon';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { Menu, MenuButton, MenuItem, MenuItems, DialogTitle } from '@headlessui/vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import { ChevronDownIcon } from '@heroicons/vue/solid';
 import debounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
@@ -111,22 +130,49 @@ export default {
                 search: this.filters.search,
                 sortBy: this.filters.sortBy,
                 order: this.filters.order
+            },
+            modals: {
+                create: {
+                    show: false
+                }
             }
+        }
+    },
+    setup(props) {
+        const form = useForm(
+            props.fields.reduce((form, field) => {
+                if (field.fillable) {
+                    form[field.column] = null;
+                }
+
+                return form;
+            }, {})
+        )
+
+        return { form }
+    },
+    computed: {
+        fillableFields() {
+            return this.fields.filter(e => e.fillable);
         }
     },
     components: {
         Table,
         Pagination,
+        Modal,
         PrimaryButton,
         Input,
         Label,
+        EditField,
 
-        CheckCircleIcon,
         Menu,
         MenuButton,
         MenuItem,
         MenuItems,
+        DialogTitle,
+
         ChevronDownIcon,
+        CheckCircleIcon,
     },
     watch: {
         table: {
@@ -156,7 +202,7 @@ export default {
         },
         dispatch(action) {
             this.$inertia.post(`${window.location.pathname}/${action}`, {
-                records: this.records.data.filter(e => e.selected).map(e => e.id)
+                records: this.records.data.filter(e => e.selected).map(e => e.data.id)
             });
         },
         refreshRecords(data = null) {
