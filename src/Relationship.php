@@ -7,7 +7,11 @@ use PixelBoii\Vague\Element;
 
 use Illuminate\Support\Str;
 
-class Relationship
+use JsonSerializable;
+use ReflectionObject;
+use ReflectionProperty;
+
+class Relationship implements JsonSerializable
 {
     public $target;
 
@@ -71,6 +75,22 @@ class Relationship
             Element::subText($this->target()->name()),
             Element::resourceRecords($this->target(), $query->paginate())
         ]);
+    }
+
+    public function jsonSerialize()
+    {
+        $properties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
+        $json = [];
+
+        foreach ($properties as $property) {
+            $name = $property->name;
+            $json[$name] = $this->$name;
+        }
+
+        $json['name'] = class_basename($this);
+        $json['target'] = $this->target();
+
+        return $json;
     }
 
     public function slug()

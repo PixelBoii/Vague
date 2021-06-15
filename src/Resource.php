@@ -10,7 +10,9 @@ use PixelBoii\Vague\Relationship;
 use PixelBoii\Vague\ResourceFields;
 use PixelBoii\Vague\ResourceActions;
 
-class Resource
+use JsonSerializable;
+
+class Resource implements JsonSerializable
 {
     public static $model;
     public static $searchable;
@@ -110,6 +112,14 @@ class Resource
         }
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->name(),
+            'slug' => $this->slug()
+        ];
+    }
+
     /**
      * Fallback if resource doesnt define actions
     */
@@ -120,7 +130,7 @@ class Resource
 
     public function resolveFields($record = null)
     {
-        return array_reduce($this->fields(resolve(ResourceFields::class)), function($fields, $field) use($record) {
+        return array_reduce($this->fields(new ResourceFields()), function($fields, $field) use($record) {
             if (method_exists($field, 'onRender') && isset($record)) {
                 $field->onRender($record);
             }

@@ -10,6 +10,7 @@ Route::redirect('/', '/' . config('vague.prefix') . '/dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('vague.dashboard.index');
 
 Route::get('/resource/{resource}', [ResourceController::class, 'index'])->name('vague.resource.index');
+Route::post('/resource/{resource}/search', [ResourceController::class, 'search'])->name('vague.resource.search');
 Route::post('/resource/{resource}/{action}', [ResourceController::class, 'action'])->name('vague.resource.action');
 
 Route::get('/resource/{resource}/{record}', [RecordController::class, 'index'])->name('vague.record.index');

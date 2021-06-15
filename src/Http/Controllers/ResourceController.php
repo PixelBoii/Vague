@@ -49,6 +49,23 @@ class ResourceController extends Controller
         ]);
     }
 
+    public function search(Request $request, $resource_id)
+    {
+        $request->validate([
+            'search' => ['nullable', 'string']
+        ]);
+
+        $search = $request->input('search') ?? '';
+        $resource = ResourceHelper::getModelOrFail($resource_id);
+
+        return $resource->model()->where(fn($query) => $resource->search($query, $search))->limit(10)->get()->map(function($item) use($resource) {
+            return [
+                'data' => $item,
+                'element' => $resource->summary($item)
+            ];
+        });
+    }
+
     public function action(Request $request, $resource_id, $action_query)
     {
         $request->validate([
@@ -62,7 +79,7 @@ class ResourceController extends Controller
 
         $actions = $resource->resolveActions();
 
-        foreach ($actions as $action) {
+        foreach ($records as $record) {
             if ($action_query == 'delete') {
                 $resource->delete($request, $resource, $record);
 
@@ -75,8 +92,8 @@ class ResourceController extends Controller
                 continue;
             }
 
-            if ($action->id == $action_query) {
-                foreach ($records as $record) {
+            foreach ($actions as $action) {
+                if ($action->id == $action_query) {
                     call_user_func($action->method, $request, $resource, $record);
                 }
             }

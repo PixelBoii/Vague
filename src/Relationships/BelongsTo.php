@@ -2,6 +2,7 @@
 
 namespace PixelBoii\Vague\Relationships;
 
+use Str;
 use PixelBoii\Vague\Relationship;
 
 class BelongsTo extends Relationship
@@ -15,8 +16,8 @@ class BelongsTo extends Relationship
     public function __construct($target, $foreignKey = null, $ownerKey = null)
     {
         $this->target = $target;
-        $this->foreignKey = $foreignKey;
-        $this->ownerKey = $ownerKey;
+        $this->foreignKey = $foreignKey ?? Str::snake($target::slug()) . '_id';
+        $this->ownerKey = $ownerKey ?? 'id';
     }
 
     public function buildRelationship($model)

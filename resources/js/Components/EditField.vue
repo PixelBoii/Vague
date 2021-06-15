@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="space-y-1">
         <Label> {{ field.name }} </Label>
 
         <div class="flex items-center space-x-2" v-if="field.casts == 'image'">
@@ -10,7 +10,7 @@
 
         <Listbox as="div" :modelValue="value" @update:modelValue="handle" class="relative" v-else-if="field.casts == 'select'">
             <ListboxButton class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <span class="block truncate"> {{ value }} </span>
+                <span class="block truncate"> {{ value ?? 'Select' }} </span>
 
                 <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <SelectorIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -32,15 +32,16 @@
             </transition>
         </Listbox>
 
-        <ResourceBuilder :element="field.element" class="mt-2" v-else-if="field.casts == 'relationship'" />
+        <RelationshipField @update:modelValue="handle" :field="field" v-else-if="field.casts == 'relationship'" />
 
-        <Input :type="field.casts" :modelValue="value" @update:modelValue="handle" class="w-full" v-else />
+        <Input :type="field.casts" :step="0.01" :modelValue="value" @update:modelValue="handle" class="w-full" :disabled="!field.fillable" v-else />
     </div>
 </template>
 
 <script>
 import Input from './Input';
 import Label from './Label';
+import RelationshipField from './RelationshipField';
 
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, SelectorIcon } from '@heroicons/vue/solid'
@@ -78,12 +79,14 @@ export default {
     components: {
         Input,
         Label,
+        RelationshipField,
 
         Listbox,
         ListboxButton,
         ListboxLabel,
         ListboxOption,
         ListboxOptions,
+
         CheckIcon,
         SelectorIcon,
     }
