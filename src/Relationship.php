@@ -110,14 +110,4 @@ class Relationship implements JsonSerializable
     {
         return new static(...$arguments);
     }
-
-    /**
-     * Find relationship if no other static method matches
-    */
-    public static function __callStatic($method, $args)
-    {
-        $element = __NAMESPACE__ . '\\Relationships\\' . Str::studly($method);
-
-        return new $element(...$args);
-    }
 }

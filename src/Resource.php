@@ -138,7 +138,9 @@ class Resource implements JsonSerializable
     public function __call($name, $args)
     {
         if (in_array(strtolower($name), ['belongsto', 'belongstomany', 'hasmany', 'hasmanythrough', 'hasone'])) {
-            return Relationship::$name(...$args)->bindResource($this);
+            $element = __NAMESPACE__ . '\\Relationships\\' . Str::studly($name);
+
+            return $element::make(...$args)->bindResource($this);
         }
     }
 
