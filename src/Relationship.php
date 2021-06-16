@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use JsonSerializable;
 use ReflectionObject;
 use ReflectionProperty;
+use Exception;
 
 class Relationship implements JsonSerializable
 {
@@ -37,20 +38,13 @@ class Relationship implements JsonSerializable
         return new $this->target();
     }
 
-    public function summaryForItem($item, $fn = null)
+    public function __call($name, $args)
     {
-        $summary = $this->target()->summary($item);
-
-        if (isset($fn)) {
-            return $fn($summary, $this->target()->bindRecord($item), $item);
-        } else {
-            return $summary;
+        if (!method_exists($this->target(), $name)) {
+            throw new Exception('Method ' . $name . ' does not exist on resource ' . $this->target);
         }
-    }
 
-    public function summary(...$args)
-    {
-        return Element::relationship($this, ...$args);
+        return Element::relationship($this, $name, ...$args);
     }
 
     public function table()

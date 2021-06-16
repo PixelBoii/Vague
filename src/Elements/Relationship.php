@@ -12,11 +12,13 @@ class Relationship extends Element
     public $link;
 
     public $relationship;
+    public $targetMethod;
     public $mapFn;
 
-    public function __construct($relationship)
+    public function __construct($relationship, $method)
     {
         $this->relationship = $relationship;
+        $this->targetMethod = $method;
 
         $this->link = in_array($relationship->target()::class, config('vague.resources'));
     }
@@ -63,6 +65,19 @@ class Relationship extends Element
         return $this;
     }
 
+    public function summaryForItem($item)
+    {
+        $method = $this->targetMethod;
+        $mapFn = $this->mapFn;
+        $summary = $this->relationship->target()->$method($item);
+
+        if (isset($mapFn)) {
+            return $mapFn($summary, $this->relationship->target()->bindRecord($item), $item);
+        } else {
+            return $summary;
+        }
+    }
+
     public function summary()
     {
         $query = $this->relationship->query()->latest();
@@ -72,7 +87,7 @@ class Relationship extends Element
 
         $summary = Element::div(
             $records->reduce(function($records, $item) {
-                $result = $this->relationship->summaryForItem($item, $this->mapFn)->meta(['record' => $item]);
+                $result = $this->summaryForItem($item)->meta(['record' => $item]);
 
                 if ($this->link) {
                     $result = Element::link(
