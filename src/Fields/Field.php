@@ -3,6 +3,7 @@
 namespace PixelBoii\Vague\Fields;
 
 use Illuminate\Support\Str;
+use PixelBoii\Vague\Element;
 
 class Field
 {
@@ -47,5 +48,12 @@ class Field
         $this->nullable = true;
 
         return $this;
+    }
+
+    public function render($record)
+    {
+        $column = $this->column;
+
+        return Element::text($record->$column)->setClass('text-sm font-medium text-gray-900');
     }
 }

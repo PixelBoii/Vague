@@ -12,7 +12,6 @@ class Relationship extends Field
     public $displayOnForm = true;
 
     public $relationship;
-    public $element;
 
     public function __construct($relationship, $column = null)
     {
@@ -23,12 +22,12 @@ class Relationship extends Field
             $this->displayOnForm = false;
         }
 
-        $this->name = $column ? Str::of($column)->replace('_', ' ')->ucFirst() : $relationship->target()->name();
         $this->relationship = $relationship;
+        $this->name = $column ? Str::of($column)->replace('_', ' ')->ucFirst() : $relationship->target()->name();
     }
 
-    public function onRender($record)
+    public function render($record)
     {
-        $this->element = $this->relationship->summary($record)->hideTitle()->disableLink();
+        return $this->relationship->summary()->hideTitle()->disableLink();
     }
 }

@@ -37,7 +37,7 @@ class ResourceController extends Controller
                 'data' => $results->items()->map(function($item) use($resource) {
                     return [
                         'data' => $item,
-                        'fields' => $resource->resolveFields($item)
+                        'fields' => $resource->newInstance()->bindRecord($item)->renderFields()
                     ];
                 })
             ],

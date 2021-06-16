@@ -14,16 +14,17 @@ use ReflectionProperty;
 class Relationship implements JsonSerializable
 {
     public $target;
+    public $resource;
 
-    public function query($record)
+    public function query()
     {
         $relationship = $this->target()::slug();
 
-        if (!method_exists($record, $relationship)) {
-            $record->resolveRelationUsing($relationship, fn($model) => $this->buildRelationship($model));
+        if (!method_exists($this->resource->model(), $relationship)) {
+            $this->resource->model()->resolveRelationUsing($relationship, fn($model) => $this->buildRelationship($model));
         }
 
-        return $record->$relationship();
+        return $this->resource->record->$relationship();
     }
 
     public function get($record)
@@ -41,7 +42,7 @@ class Relationship implements JsonSerializable
         $summary = $this->target()->summary($item);
 
         if (isset($fn)) {
-            return $fn($summary, $this->target(), $item);
+            return $fn($summary, $this->target()->bindRecord($item), $item);
         } else {
             return $summary;
         }
@@ -52,7 +53,7 @@ class Relationship implements JsonSerializable
         return Element::relationship($this, ...$args);
     }
 
-    public function table($record)
+    public function table()
     {
         $request = request();
 
@@ -62,8 +63,8 @@ class Relationship implements JsonSerializable
             'search' => ['string']
         ]);
 
-        $query = $this->query($record);
-        $fields = $this->target()->resolveFields($record);
+        $query = $this->query();
+        $fields = $this->target()->resolveFields($this->resource->record);
 
         $sortBy = $request->get('sortBy') ?? 'created_at';
         $search = $request->get('search') ?? '';
@@ -91,6 +92,13 @@ class Relationship implements JsonSerializable
         $json['target'] = $this->target();
 
         return $json;
+    }
+
+    public function bindResource($resource)
+    {
+        $this->resource = $resource;
+
+        return $this;
     }
 
     public function slug()

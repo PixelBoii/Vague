@@ -11,12 +11,16 @@ use PixelBoii\Vague\ResourceFields;
 use PixelBoii\Vague\ResourceActions;
 
 use JsonSerializable;
+use ReflectionObject;
+use ReflectionProperty;
 
 class Resource implements JsonSerializable
 {
     public static $model;
     public static $searchable;
     public static $name;
+
+    public $record;
 
     public static function slug()
     {
@@ -39,9 +43,9 @@ class Resource implements JsonSerializable
         return new $this::$model();
     }
 
-    public function render($record)
+    public function render()
     {
-        return $this->recordForm($record);
+        return $this->recordForm();
     }
 
     public function save(Request $request, $resource, $record)
@@ -72,8 +76,12 @@ class Resource implements JsonSerializable
         ]);
     }
 
-    public function recordForm($record, $label = true)
+    public function recordForm($record = null, $label = true)
     {
+        if (is_null($record)) {
+            $record = $this->record;
+        }
+
         if ($label) {
             return Element::div([
                 Element::subText($this->name()),
@@ -110,11 +118,33 @@ class Resource implements JsonSerializable
         }
     }
 
+    public function setAttribute($attribute, $value)
+    {
+        $this->record->$attribute = $value;
+    }
+
+    public function getAttribute($attribute)
+    {
+        return $this->record->$attribute;
+    }
+
+    public function bindRecord($record)
+    {
+        $this->record = $record;
+
+        return $this;
+    }
+
     public function __call($name, $args)
     {
         if (in_array(strtolower($name), ['belongsto', 'belongstomany', 'hasmany', 'hasmanythrough', 'hasone'])) {
-            return Relationship::$name(...$args);
+            return Relationship::$name(...$args)->bindResource($this);
         }
+    }
+
+    public function newInstance()
+    {
+        return $this->make();
     }
 
     public function jsonSerialize()
@@ -133,15 +163,24 @@ class Resource implements JsonSerializable
         return [];
     }
 
-    public function resolveFields($record = null)
+    public function resolveFields()
     {
-        return array_reduce($this->fields(new ResourceFields()), function($fields, $field) use($record) {
-            if (method_exists($field, 'onRender') && isset($record)) {
-                $field->onRender($record);
+        return $this->fields(new ResourceFields());
+    }
+
+    public function renderFields()
+    {
+        return array_map(function($field) {
+            $properties = (new ReflectionObject($field))->getProperties(ReflectionProperty::IS_PUBLIC);
+            $json = [ 'element' => $field->render($this->record) ];
+
+            foreach ($properties as $property) {
+                $name = $property->name;
+                $json[$name] = $field->$name;
             }
 
-            return [...$fields, $field];
-        }, []);
+            return $json;
+        }, $this->resolveFields());
     }
 
     public function resolveActions()

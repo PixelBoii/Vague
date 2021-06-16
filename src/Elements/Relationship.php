@@ -12,13 +12,11 @@ class Relationship extends Element
     public $link;
 
     public $relationship;
-    public $record;
     public $mapFn;
 
-    public function __construct($relationship, $record)
+    public function __construct($relationship)
     {
         $this->relationship = $relationship;
-        $this->record = $record;
 
         $this->link = in_array($relationship->target()::class, config('vague.resources'));
     }
@@ -67,7 +65,7 @@ class Relationship extends Element
 
     public function summary()
     {
-        $query = $this->relationship->query($this->record)->latest();
+        $query = $this->relationship->query()->latest();
         $limit = $this->relationship->type == 'single' ? 1 : $this->limit;
 
         $records = $query->limit($limit)->get();

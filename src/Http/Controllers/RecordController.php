@@ -12,13 +12,13 @@ class RecordController extends Controller
     public function index($resource, $record_id)
     {
         $resource = ResourceHelper::getModelOrFail($resource);
-        $record = $resource->model()->whereId($record_id)->firstOrFail();
+        $resource->bindRecord($resource->model()->whereId($record_id)->firstOrFail());
 
-        $breadcrumbs = Breadcrumbs::make()->add('', 'Resource')->newRoot('resource')->add($resource->slug(), $resource->name())->add($record->id);
+        $breadcrumbs = Breadcrumbs::make()->add('', 'Resource')->newRoot('resource')->add($resource->slug(), $resource->name())->add($resource->getAttribute('id'));
 
         return Inertia::render('Record', [
-            'elements' => $resource->render($record),
-            'record' => $record,
+            'elements' => $resource->render(),
+            'record' => $resource->record,
             'breadcrumbs' => $breadcrumbs
         ]);
     }

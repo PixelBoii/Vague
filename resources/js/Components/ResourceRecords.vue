@@ -76,9 +76,7 @@
                     <td v-for="field in record.fields" :key="`record-${record.data.id}-${field.column}`" class="whitespace-nowrap">
                         <inertia-link :href="`/vague/resource/${slug}/${record.data.id}`" class="inline-block h-full">
                             <div class="px-6 py-4 h-full">
-                                <ResourceBuilder :element="field.element" v-if="field.casts == 'relationship'" />
-
-                                <span class="text-sm font-medium text-gray-900" v-else> {{ record.data[field.column] }} </span>
+                                <ResourceBuilder :element="field.element" />
                             </div>
                         </inertia-link>
                     </td>
