@@ -13,10 +13,10 @@ class RecordForm extends Element
         'actions' => []
     ];
 
-    public function __construct($resource, $record)
+    public function __construct($resource)
     {
-        $this->attributes['record'] = $record;
-        $this->attributes['fields'] = array_values(array_filter($resource->resolveFields($record), fn($field) => $field->displayOnForm));
+        $this->attributes['record'] = $resource->record;
+        $this->attributes['fields'] = array_values(array_filter($resource->renderFields(), fn($field) => $field['displayOnForm']));
         $this->attributes['actions'] = $resource->actionsForRoute('recordForm');
     }
 }
