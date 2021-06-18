@@ -28,17 +28,17 @@ class DummyClass extends Resource
     /**
      * The view that will show up when directly loading this resource
     */
-    public function render($record)
+    public function render()
     {
         return Element::div([
-            $this->recordForm($record)
+            $this->recordForm()
         ]);
     }
 
     /**
      * What should be displayed in read-only mode
     */
-    public function summary($record)
+    public function summary()
     {
         return Element::div([
             Element::text('This is an example'),

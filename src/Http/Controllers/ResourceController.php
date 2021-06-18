@@ -61,7 +61,7 @@ class ResourceController extends Controller
         return $resource->model()->where(fn($query) => $resource->search($query, $search))->limit(10)->get()->map(function($item) use($resource) {
             return [
                 'data' => $item,
-                'element' => $resource->summary($item)
+                'element' => $resource->bindRecord($item)->summary()
             ];
         });
     }

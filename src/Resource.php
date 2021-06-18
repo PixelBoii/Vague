@@ -144,6 +144,11 @@ class Resource implements JsonSerializable
         }
     }
 
+    public function __get($property)
+    {
+        return $this->record->$property;
+    }
+
     public function newInstance()
     {
         return $this->make();

@@ -41,10 +41,10 @@ class User extends Resource
     /**
      * The view that will show up when directly loading this resource
     */
-    public function render($record)
+    public function render()
     {
         return Element::div([
-            $this->recordForm($record),
+            $this->recordForm(),
         ]);
     }
 
@@ -63,22 +63,22 @@ class User extends Resource
     /**
      * What should be displayed in the sidebar
     */
-    public function sidebar($record)
+    public function sidebar()
     {
         return Element::div([
-            Element::text($record->name)->setClass('text-white font-medium'),
-            Element::text($record->email)->setClass('text-gray-300 text-sm')
+            Element::text($this->name)->setClass('text-white font-medium'),
+            Element::text($this->email)->setClass('text-gray-300 text-sm')
         ]);
     }
 
     /**
      * What should be displayed in read-only mode
     */
-    public function summary($record)
+    public function summary()
     {
         return Element::div([
-            Element::text($record->name),
-            Element::subText($record->email),
+            Element::text($this->name),
+            Element::subText($this->email),
         ]);
     }
 }

@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 $resource = config('vague.user.resource')::make();
                 $method = config('vague.user.sidebar');
 
-                return $resource->$method($request->user());
+                return $resource->bindRecord($request->user())->$method();
             },
 
             'quickSearch.results' => fn () => array_reduce(config('vague.resources'), function($resources, $resource) use($request) {
@@ -64,7 +64,7 @@ class HandleInertiaRequests extends Middleware
                         'slug' => $resource::make()->slug(),
     
                         'records' => $records->map(fn($record) => [
-                            'summary' => $resource::make()->summary($record),
+                            'summary' => $resource::make()->bindRecord($record)->summary(),
                             'id' => $record->id
                         ])
                     ]);

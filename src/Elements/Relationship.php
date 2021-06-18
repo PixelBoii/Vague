@@ -69,7 +69,7 @@ class Relationship extends Element
     {
         $method = $this->targetMethod;
         $mapFn = $this->mapFn;
-        $summary = $this->relationship->target()->$method($item);
+        $summary = $this->relationship->target()->bindRecord($item)->$method();
 
         if (isset($mapFn)) {
             return $mapFn($summary, $this->relationship->target()->bindRecord($item), $item);
