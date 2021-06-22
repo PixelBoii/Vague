@@ -26,6 +26,7 @@ class Relationship extends Field
         } else {
             /* Relationship doesn't have a local key, so don't show on form */
             $this->displayOnForm = false;
+            $this->fillable = false;
         }
 
         $this->relationship = $relationship;
