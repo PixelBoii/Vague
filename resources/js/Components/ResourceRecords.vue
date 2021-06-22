@@ -15,7 +15,7 @@
         </template>
     </Modal>
 
-    <div class="space-y-3">
+    <div class="space-y-3" v-bind="$attrs">
         <div class="flex items-end justify-between">
             <div>
                 <Label> Search </Label>

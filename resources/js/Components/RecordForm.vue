@@ -19,7 +19,7 @@
         </template>
     </Modal>
 
-    <form @submit.prevent>
+    <form @submit.prevent v-bind="$attrs">
         <div class="shadow sm:rounded-md">
             <div class="px-4 py-5 bg-white rounded-t-md sm:p-6">
                 <div class="grid grid-cols-12 gap-6">
