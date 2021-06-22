@@ -7,7 +7,7 @@ class SelectItem
     public $name;
     public $alias;
 
-    public function __construct($name)
+    public function __construct($resource, $name)
     {
         $this->name = $name;
     }
