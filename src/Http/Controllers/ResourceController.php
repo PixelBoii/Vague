@@ -49,6 +49,11 @@ class ResourceController extends Controller
         ]);
     }
 
+    public function create(Request $request, $resource_id)
+    {
+        return ResourceHelper::getModelOrFail($resource_id)->create($request);
+    }
+
     public function search(Request $request, $resource_id)
     {
         $request->validate([

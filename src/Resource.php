@@ -48,6 +48,25 @@ class Resource implements JsonSerializable
         return $this->recordForm();
     }
 
+    public function create(Request $request)
+    {
+        $record = $this->model()->create(
+            $request->validate(
+                array_reduce($this->resolveFields(), function($form, $field) {
+                    $column = $field->column;
+                    $form[$column] = [];
+        
+                    return $form;
+                }, [])
+            )
+        );
+
+        return redirect()->route('vague.record.index', [
+            'resource' => $this->slug(),
+            'record' => $record->id
+        ]);
+    }
+
     public function save(Request $request, $resource, $record)
     {
         $record->update(

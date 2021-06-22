@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model:show="modals.create.show" width="xl">
+    <Modal v-model:show="modals.create.show" width="xl" @submit="post('create')">
         <template #content>
             <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Create Record </DialogTitle>
 
@@ -109,10 +109,9 @@ import EditField from './EditField';
 
 import CheckCircleIcon from '@heroicons/vue/outline/CheckCircleIcon';
 import { Menu, MenuButton, MenuItem, MenuItems, DialogTitle } from '@headlessui/vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { ChevronDownIcon } from '@heroicons/vue/solid';
-import debounce from 'lodash/debounce';
-import pickBy from 'lodash/pickBy';
+import { debounce, pickBy } from 'lodash';
 
 export default {
     props: [
@@ -152,6 +151,9 @@ export default {
     computed: {
         fillableFields() {
             return this.fields.filter(e => e.fillable);
+        },
+        config() {
+            return usePage().props.value.config;
         }
     },
     components: {
@@ -209,6 +211,9 @@ export default {
             }
 
             this.$inertia.get(window.location.pathname, pickBy(data), { preserveState: true, preserveScroll: true });
+        },
+        post(action) {
+            this.form.post(`/${this.config.prefix}/resource/${this.slug}/${action}`);
         }
     }
 }
