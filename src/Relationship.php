@@ -4,18 +4,19 @@ namespace PixelBoii\Vague;
 
 use PixelBoii\Vague\Resource;
 use PixelBoii\Vague\Element;
+use PixelBoii\Vague\ResourceCollection;
 
 use Illuminate\Support\Str;
 
 use JsonSerializable;
 use ReflectionObject;
 use ReflectionProperty;
-use Exception;
 
 class Relationship implements JsonSerializable
 {
     public $target;
     public $resource;
+    public $link = true;
 
     public function query()
     {
@@ -28,9 +29,18 @@ class Relationship implements JsonSerializable
         return $this->resource->record->$relationship();
     }
 
-    public function get($record)
+    public function link()
     {
-        return $this->query($record)->get();
+        $this->link = true;
+
+        return $this;
+    }
+
+    public function dontLink()
+    {
+        $this->link = false;
+
+        return $this;
     }
 
     public function target()
@@ -38,38 +48,19 @@ class Relationship implements JsonSerializable
         return new $this->target();
     }
 
-    public function __call($name, $args)
+    public function first()
     {
-        if (!method_exists($this->target(), $name)) {
-            throw new Exception('Method ' . $name . ' does not exist on resource ' . $this->target);
-        }
+        return $this->target()->bindRecord($this->query()->first());
+    }
 
-        return Element::relationship($this, $name, ...$args);
+    public function get()
+    {
+        return new ResourceCollection($this->query(), $this->target());
     }
 
     public function table()
     {
-        $request = request();
-
-        $request->validate([
-            'sortBy' => ['string'],
-            'order' => ['in:DESC,ASC'],
-            'search' => ['string']
-        ]);
-
-        $query = $this->query();
-        $fields = $this->target()->resolveFields($this->resource->record);
-
-        $sortBy = $request->get('sortBy') ?? 'created_at';
-        $search = $request->get('search') ?? '';
-        $sortOrder = $request->get('order') ?? 'DESC';
-
-        $query->orderBy($sortBy, $sortOrder)->where(fn($query) => $this->target()->search($query, $search));
-
-        return Element::div([
-            Element::subText($this->target()->name()),
-            Element::resourceRecords($this->target(), $query->paginate())
-        ]);
+        return $this->get()->table();
     }
 
     public function jsonSerialize()
@@ -93,6 +84,23 @@ class Relationship implements JsonSerializable
         $this->resource = $resource;
 
         return $this;
+    }
+
+    public function __call($name, $args)
+    {
+        $baseLink = '/' . config('vague.prefix') . '/resource/' . $this->target()->slug() . '/';
+
+        if ($this->type == 'single') {
+            $resource = $this->first();
+
+            if (isset($resource->record)) {
+                return $this->link ? Element::link($resource->$name(...$args), $baseLink . $resource->record->id) : $resource->$name(...$args);
+            } else {
+                return $this->target()->notFound();
+            }
+        } else {
+            return $this->get()->$name(...$args)->map(fn($el) => $this->link && isset($el->meta['record']) ? Element::link($el, $baseLink . $el->meta['record']->id) : $el);
+        }
     }
 
     public function slug()

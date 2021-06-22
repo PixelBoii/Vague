@@ -76,20 +76,9 @@ class Resource implements JsonSerializable
         ]);
     }
 
-    public function recordForm($record = null, $label = true)
+    public function recordForm()
     {
-        if (is_null($record)) {
-            $record = $this->record;
-        }
-
-        if ($label) {
-            return Element::div([
-                Element::subText($this->name()),
-                Element::recordForm($this, $record),
-            ])->class('space-y-2');
-        } else {
-            return Element::recordForm($this, $record);
-        }
+        return Element::recordForm($this);
     }
 
     public function search($query, $search)
@@ -138,9 +127,9 @@ class Resource implements JsonSerializable
     public function __call($name, $args)
     {
         if (in_array(strtolower($name), ['belongsto', 'belongstomany', 'hasmany', 'hasmanythrough', 'hasone'])) {
-            $element = __NAMESPACE__ . '\\Relationships\\' . Str::studly($name);
+            $namespace = __NAMESPACE__ . '\\Relationships\\' . Str::studly($name);
 
-            return $element::make(...$args)->bindResource($this);
+            return $namespace::make(...$args)->bindResource($this);
         }
     }
 
@@ -152,6 +141,13 @@ class Resource implements JsonSerializable
     public function newInstance()
     {
         return $this->make();
+    }
+
+    public function notFound()
+    {
+        return Element::div([
+            Element::text('This record was not found'),
+        ]);
     }
 
     public function jsonSerialize()
@@ -172,7 +168,7 @@ class Resource implements JsonSerializable
 
     public function resolveFields()
     {
-        return $this->fields(new ResourceFields());
+        return $this->fields(new ResourceFields($this));
     }
 
     public function renderFields()

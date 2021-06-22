@@ -15,13 +15,13 @@ class Field
     public $column;
     public $name;
 
-    public function __construct($name, $column = null)
+    public function __construct($resource, $column, $name = null)
     {
-        if (is_null($column)) {
-            $this->column = Str::snake(Str::lower($name));
+        if (is_null($name)) {
+            $this->name = Str::of($column)->replace('_', ' ')->ucFirst();
         }
 
-        $this->name = Str::of($name)->replace('_', ' ')->ucFirst();
+        $this->column = $column;
     }
 
     public static function make(...$arguments): Field
