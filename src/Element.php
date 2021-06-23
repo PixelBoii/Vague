@@ -87,7 +87,7 @@ class Element implements JsonSerializable
             $class = explode(' ', $class);
         }
 
-        $this->attributes['class'] = array_merge($this->attributes['class'], $class);
+        $this->attributes['class'] = array_merge($this->attributes['class'] ?? [], $class);
         return $this;
     }
 
