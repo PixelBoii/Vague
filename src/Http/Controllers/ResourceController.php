@@ -22,18 +22,14 @@ class ResourceController extends Controller
         $search = $request->get('search') ?? '';
         $sortOrder = $request->get('order') ?? 'DESC';
 
-        $fields = $resource->resolveFields();
-        $actions = $resource->actionsForRoute('table');
-
         $query = $resource->model()->orderBy($sortBy, $sortOrder)->where(fn($query) => $resource->search($query, $search));
-
-        $breadcrumbs = Breadcrumbs::make()->add('', 'Resource')->newRoot('resource')->add($resource->slug(), $resource->name());
         $results = $query->paginate();
 
         return Inertia::render('Resource', [
             'filters' => $request->all('search', 'order', 'sortBy'),
             'records' => [
                 'links' => $results->links(),
+                'total' => $results->total(),
                 'data' => $results->items()->map(function($item) use($resource) {
                     return [
                         'data' => $item,
@@ -41,11 +37,17 @@ class ResourceController extends Controller
                     ];
                 })
             ],
-            'fields' => $fields,
-            'actions' => $actions,
-            'slug' => $resource->slug(),
-            'name' => $resource->name(),
-            'breadcrumbs' => $breadcrumbs
+            'fields' => $resource->resolveFields(),
+            'actions' => $resource->actionsForRoute('table'),
+            'resource' => $resource,
+            'users_with_access' => $resource->usersWithAccess()->map(function($user) {
+                $icon = config('vague.user.icon');
+
+                return [
+                    'id' => $user->id,
+                    'icon' => $user->$icon
+                ];
+            })
         ]);
     }
 
@@ -66,7 +68,7 @@ class ResourceController extends Controller
         return $resource->model()->where(fn($query) => $resource->search($query, $search))->limit(10)->get()->map(function($item) use($resource) {
             return [
                 'data' => $item,
-                'element' => $resource->bindRecord($item)->summary()
+                'element' => $resource->newInstance()->bindRecord($item)->summary()
             ];
         });
     }
