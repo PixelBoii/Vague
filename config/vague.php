@@ -1,10 +1,20 @@
 <?php
 
 use App\Http\Middleware\HandleVagueRequest;
+use Pixel\Vague\Features;
 
 return [
     'resources' => [
         App\Vague\User::class,
+    ],
+
+    'features' => [
+        Features::permissions()
+    ],
+
+    'table_names' => [
+        'user_roles' => 'user_roles',
+        'user_permissions' => 'user_permissions',
     ],
 
     'user' => [

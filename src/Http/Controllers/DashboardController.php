@@ -8,18 +8,22 @@ use Str;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Dashboard', [
-            'resources' => array_map(function($resource) {
+            'resources' => array_reduce(config('vague.resources'), function($resources, $resource) use($request) {
                 $resource = $resource::make();
 
-                return [
-                    'name' => $resource->name(),
-                    'record_count' => $resource->model()->count(),
-                    'slug' => Str::lower($resource->slug())
-                ];
-            }, config('vague.resources'))
+                if ($request->user()->can('view ' . strtolower($resource->name()))) {
+                    array_push($resources, [
+                        'name' => $resource->name(),
+                        'record_count' => $resource->model()->count(),
+                        'slug' => Str::lower($resource->slug())
+                    ]);
+                }
+
+                return $resources;
+            }, [])
         ]);
     }
 }

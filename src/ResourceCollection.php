@@ -41,7 +41,7 @@ class ResourceCollection
         return Element::div(
             $this->query->limit($limit)->get()->map(function($record) use($name) {
                 if (isset($record)) {
-                    return $this->resource->bindRecord($record)->$name()->meta([
+                    return $this->resource->newInstance()->bindRecord($record)->$name()->meta([
                         'record' => $record
                     ]);
                 } else {

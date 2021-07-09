@@ -4,16 +4,14 @@ namespace PixelBoii\Vague;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Blade;
-
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\UrlWindow;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Gate;
 
 use PixelBoii\Vague\Console\{InstallPackage, MakeResource};
 use PixelBoii\Vague\Http\Middleware\HandleInertiaRequests;
-use PixelBoii\Vague\ResourceFields;
 
 class VagueServiceProvider extends ServiceProvider
 {
@@ -30,16 +28,11 @@ class VagueServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerRoutes();
         $this->registerLengthAwarePaginator();
-    }
 
-    protected function registerBladeField($field)
-    {
-        Blade::component('vague::components.fields.' . $field, 'vague-' . $field);
-    }
-
-    protected function registerBladeComponent($component)
-    {
-        Blade::component('vague::components.' . $component, 'vague-' . $component);
+        if (Features::enabled('permissions')) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->registerPermissions();
+        }
     }
 
     protected function registerViews()
@@ -54,7 +47,7 @@ class VagueServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/vague'),
+            __DIR__.'/../public/vendor/vague' => public_path('vendor/vague'),
         ], 'public');
 
         $this->publishes([
@@ -137,6 +130,15 @@ class VagueServiceProvider extends ServiceProvider
                     ]);
                 }
             };
+        });
+    }
+
+    protected function registerPermissions()
+    {
+        Gate::before(function ($user, $ability) {
+            $user->load('permissions', 'roles');
+
+            return $user->hasDirectPermission($ability) || $user->hasIndirectPermission($ability);
         });
     }
 }

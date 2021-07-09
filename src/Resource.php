@@ -5,11 +5,6 @@ namespace PixelBoii\Vague;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-use PixelBoii\Vague\Element;
-use PixelBoii\Vague\Relationship;
-use PixelBoii\Vague\ResourceFields;
-use PixelBoii\Vague\ResourceActions;
-
 use JsonSerializable;
 use ReflectionObject;
 use ReflectionProperty;
@@ -185,6 +180,14 @@ class Resource implements JsonSerializable
         return [];
     }
 
+    /**
+     * Fallback if resource doesnt define fields
+    */
+    public function fields($fields)
+    {
+        return [];
+    }
+
     public function resolveFields()
     {
         return $this->fields(new ResourceFields($this));
@@ -218,6 +221,23 @@ class Resource implements JsonSerializable
     public function query()
     {
         return $this->model()->query();
+    }
+
+    public function usersWithAccess()
+    {
+        $rolesWithAccess = array_filter(Vague::$roles, function($role) {
+            foreach ($role['permissions'] as $permission) {
+                if ($permission == '*' || $permission == 'view ' . $this->slug()) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        return config('vague.user.resource')::make()->model()->whereHas('roles', function($q) use($rolesWithAccess) {
+            $q->whereIn('role', array_map(fn($role) => $role['name'], $rolesWithAccess));
+        })->get();
     }
 
     public static function make()

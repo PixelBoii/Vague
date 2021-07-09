@@ -63,6 +63,11 @@ class Relationship implements JsonSerializable
         return $this->get()->table();
     }
 
+    public function stackedList(...$args)
+    {
+        return $this->get()->stackedList(...$args);
+    }
+
     public function jsonSerialize()
     {
         $properties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
