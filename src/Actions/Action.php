@@ -26,6 +26,13 @@ class Action
         return $this;
     }
 
+    public function name($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function secondary()
     {
         $this->element = Element::SecondaryButton($this->name);
