@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="/vendor/vague/css/app.css">
-        <script src="/vendor/vague/js/app.js" defer></script>
+        <link href="{{ mix('css/app.css', '/vendor/vague') }}" rel="stylesheet" />    
+        <script src="{{ mix('js/app.js', '/vendor/vague') }}" defer></script>
     </head>
 
     <body class="bg-gray-100">

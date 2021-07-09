@@ -9,5 +9,5 @@ docs
 phpunit.xml
 psalm.xml
 testbench.yaml
-vendor
+/vendor
 node_modules
