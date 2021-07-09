@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use PixelBoii\Vague\Http\Controllers\DashboardController;
 use PixelBoii\Vague\Http\Controllers\ResourceController;
 use PixelBoii\Vague\Http\Controllers\RecordController;
+use PixelBoii\Vague\Http\Controllers\ElementController;
 
 Route::redirect('/', '/' . config('vague.prefix') . '/dashboard');
 
@@ -15,4 +16,5 @@ Route::post('/resource/{resource}/create', [ResourceController::class, 'create']
 Route::post('/resource/{resource}/{action}', [ResourceController::class, 'action'])->name('vague.resource.action');
 
 Route::get('/resource/{resource}/{record}', [RecordController::class, 'index'])->name('vague.record.index');
-Route::post('/resource/{resource}/{record}/{action}', [RecordController::class, 'action'])->name('vague.record.action');
+Route::post('/resource/{resource}/{record}/actions/{action}', [RecordController::class, 'action'])->name('vague.record.action');
+Route::post('/resource/{resource}/{record}/elements/{element}/events/{event}', [RecordController::class, 'triggerEvent'])->name('vague.record.triggerEvent');
