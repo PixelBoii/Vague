@@ -72,7 +72,7 @@ export default {
         )
 
         const post = (action) => {
-            form.post(`${window.location.href}/${action}`);
+            form.post(`${window.location.href}/actions/${action}`);
         }
 
         const modals = reactive({

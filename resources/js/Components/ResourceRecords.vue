@@ -201,7 +201,7 @@ export default {
             this.table = data;
         },
         dispatch(action) {
-            this.$inertia.post(`${window.location.pathname}/${action}`, {
+            this.$inertia.post(`${window.location.pathname}/actions/${action}`, {
                 records: this.records.data.filter(e => e.selected).map(e => e.data.id)
             });
         },
@@ -213,7 +213,7 @@ export default {
             this.$inertia.get(window.location.pathname, pickBy(data), { preserveState: true, preserveScroll: true });
         },
         post(action) {
-            this.form.post(`/${this.config.prefix}/resource/${this.slug}/${action}`);
+            this.form.post(`/${this.config.prefix}/resource/${this.slug}/actions/${action}`);
         }
     }
 }
