@@ -10,8 +10,8 @@
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full" :class="`sm:max-w-${width}`">
-                        <div class="bg-white px-7 pt-8 pb-8 sm:flex sm:items-start space-x-4 rounded-t-lg">
+                    <div class="inline-block align-bottom bg-white rounded-lg overflow-hidden text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full" :class="`sm:max-w-${width}`">
+                        <div class="bg-white px-7 pt-8 pb-8 sm:flex sm:items-start space-x-4">
                             <slot name="body">
                                 <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
                                     <slot name="content">
@@ -27,7 +27,7 @@
                             </slot>
                         </div>
 
-                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg">
+                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse" v-if="enabledSlots.includes('footer')">
                             <slot name="footer">
                                 <PrimaryButton @click="$emit('submit')"> Submit </PrimaryButton>
                             </slot>
@@ -56,6 +56,10 @@ export default {
         width: {
             type: String,
             default: 'lg'
+        },
+        enabledSlots: {
+            type: Array,
+            default: ['body', 'content', 'footer']
         }
     },
     emits: ['update:show'],
