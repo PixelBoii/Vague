@@ -6,5 +6,6 @@ use PixelBoii\Vague\Element;
 
 class SecondaryButton extends Element
 {
-    public $tag = 'SecondaryButton';
+    public $component = 'SecondaryButton';
+    public $import = true;
 }

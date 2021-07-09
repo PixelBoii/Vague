@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class ResourceRecords extends Element
 {
-    public $tag = 'ResourceRecords';
+    public $component = 'ResourceRecords';
+    public $import = true;
 
     public $attributes = [
         'class' => []

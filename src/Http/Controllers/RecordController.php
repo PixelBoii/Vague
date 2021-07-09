@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use PixelBoii\Vague\Http\Helpers\ResourceHelper;
 use PixelBoii\Vague\Breadcrumbs;
+use PixelBoii\Vague\Vague;
 
 class RecordController extends Controller
 {
@@ -52,5 +53,20 @@ class RecordController extends Controller
             'resource' => $resource_id,
             'record' => $record_id
         ]);
+    }
+
+    public function triggerEvent(Request $request, $resource, $record_id, $elementId, $event)
+    {
+        $resource = ResourceHelper::getModelOrFail($resource);
+        $resource->bindRecord($resource->model()->whereId($record_id)->firstOrFail())->render();
+        $element = Vague::$elements[$elementId] ?? null;
+
+        if (is_null($element) || !in_array($event, array_keys($element->events))) {
+            return abort(400);
+        } else {
+            $element->events[$event]['fn']($request, ...$request->json()->all());
+
+            return response(null, 204);
+        }
     }
 }

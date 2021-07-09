@@ -6,7 +6,7 @@ use PixelBoii\Vague\Element;
 
 class Link extends Element
 {
-    public $tag = 'inertia-link';
+    public $component = 'inertia-link';
 
     public $attributes = [
         'href' => ''

@@ -2,18 +2,22 @@
 
 namespace PixelBoii\Vague;
 
+use PixelBoii\Vague\Vague;
 use Illuminate\Support\Str;
 use JsonSerializable;
 
 class Element implements JsonSerializable
 {
     public $content = [];
+    public $meta = [];
+    public $events = [];
+    public $import = false;
 
     public $attributes = [
         'class' => []
     ];
 
-    public $meta = [];
+    public $id;
 
     public function __construct($content = [])
     {
@@ -22,14 +26,24 @@ class Element implements JsonSerializable
         }
 
         $this->content = $content;
+        $this->id = Vague::registerElement($this);
     }
 
     public function jsonSerialize()
     {
         return [
+            'id' => $this->id,
             'attributes' => $this->getAttributes(),
             'content' => $this->render(),
-            'tag' => $this->tag
+            'import' => $this->import,
+            'component' => $this->component,
+            'events' => array_map(function($event) {
+                return [
+                    'element' => $this->id,
+                    'name' => $event,
+                    'args' => $this->events[$event]['args']
+                ];
+            }, array_keys($this->events))
         ];
     }
 
@@ -105,6 +119,35 @@ class Element implements JsonSerializable
         }
 
         return $this;
+    }
+
+    public function unshift($el)
+    {
+        array_unshift($this->content, $el);
+
+        return $this;
+    }
+
+    public function push($el)
+    {
+        array_push($this->content, $el);
+
+        return $this;
+    }
+
+    public function onClick($fn, ...$args)
+    {
+        $this->events['onClick'] = [
+            'fn' => $fn,
+            'args' => $args
+        ];
+
+        return $this;
+    }
+
+    public static function make(...$args)
+    {
+        return new static(...$args);
     }
 
     /**

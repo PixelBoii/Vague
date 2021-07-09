@@ -6,7 +6,7 @@ use PixelBoii\Vague\Element;
 
 class Image extends Element
 {
-    public $tag = 'img';
+    public $component = 'img';
 
     public $attributes = [
         'alt' => '',

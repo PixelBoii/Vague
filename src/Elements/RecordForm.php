@@ -6,7 +6,8 @@ use PixelBoii\Vague\Element;
 
 class RecordForm extends Element
 {
-    public $tag = 'RecordForm';
+    public $component = 'RecordForm';
+    public $import = true;
 
     public $attributes = [
         'class' => [],

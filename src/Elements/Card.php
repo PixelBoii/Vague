@@ -6,7 +6,7 @@ use PixelBoii\Vague\Element;
 
 class Card extends Element
 {
-    public $tag = 'div';
+    public $component = 'div';
 
     public function getClass()
     {

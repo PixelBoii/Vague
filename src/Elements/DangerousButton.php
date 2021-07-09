@@ -6,5 +6,6 @@ use PixelBoii\Vague\Element;
 
 class DangerousButton extends Element
 {
-    public $tag = 'DangerousButton';
+    public $component = 'DangerousButton';
+    public $import = true;
 }
