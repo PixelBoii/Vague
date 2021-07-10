@@ -4,6 +4,7 @@ namespace PixelBoii\Vague\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use PixelBoii\Vague\Features;
 
 class InstallPackage extends Command
 {
@@ -28,6 +29,24 @@ class InstallPackage extends Command
                 $this->publish('config', true);
             } else {
                 $this->info('Existing configuration was not overwritten');
+            }
+        }
+
+        /**
+         * Publish migrations
+         */
+        if (Features::enabled('permissions')) {
+            $this->info('Publishing migration files...');
+
+            if (!File::exists(database_path('2021_06_23_204918_create_permission_tables.php'))) {
+                $this->publish('permission-migrations');
+            } else {
+                if ($this->shouldOverwrite('Permission Migrations')) {
+                    $this->info('Overwriting permission migrations...');
+                    $this->publish('permission-migrations', true);
+                } else {
+                    $this->info('Existing files were not overwritten');
+                }
             }
         }
 

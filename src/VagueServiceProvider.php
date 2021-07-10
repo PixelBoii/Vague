@@ -30,7 +30,6 @@ class VagueServiceProvider extends ServiceProvider
         $this->registerLengthAwarePaginator();
 
         if (Features::enabled('permissions')) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
             $this->registerPermissions();
         }
     }
@@ -45,6 +44,10 @@ class VagueServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/vague.php' => config_path('vague.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/2021_06_23_204918_create_permission_tables.php' => database_path('migrations/2021_06_23_204918_create_permission_tables.php'),
+        ], 'permission-migrations');
 
         $this->publishes([
             __DIR__.'/../public/vendor/vague' => public_path('vendor/vague'),
