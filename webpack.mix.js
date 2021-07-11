@@ -17,6 +17,4 @@ mix.setPublicPath("public/vendor/vague")
                 '@': path.resolve('resources/js'),
             },
         },
-    })
-    .sourceMaps()
-    .version();
+    });
