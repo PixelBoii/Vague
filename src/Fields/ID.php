@@ -2,7 +2,7 @@
 
 namespace PixelBoii\Vague\Fields;
 
-class ID extends Field
+class Id extends Field
 {
     public $casts = 'number';
     public $fillable = false;
