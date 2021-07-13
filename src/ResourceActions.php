@@ -2,12 +2,14 @@
 
 namespace PixelBoii\Vague;
 
+use Illuminate\Support\Str;
+
 class ResourceActions
 {
     public function __call($name, $arguments)
     {
-        $field = 'PixelBoii\\Vague\\Actions\\' . $name;
+        $action = 'PixelBoii\\Vague\\Actions\\' . Str::studly($name);
 
-        return new $field(...$arguments);
+        return new $action(...$arguments);
     }
 }
