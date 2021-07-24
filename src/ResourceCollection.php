@@ -31,7 +31,7 @@ class ResourceCollection
 
         $this->query->orderBy($sortBy, $sortOrder)->where(fn($query) => $this->resource->search($query, $search));
 
-        return Element::resourceRecords($this->resource, $this->query->paginate());
+        return Element::resourceRecords($this->resource, $this->resource->paginate($this->query));
     }
 
     public function __call($name, $args)

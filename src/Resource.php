@@ -4,6 +4,9 @@ namespace PixelBoii\Vague;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
+use Illuminate\Pagination\Paginator;
+use PixelBoii\Vague\Paginators\LengthAwarePaginator;
 
 use JsonSerializable;
 use ReflectionObject;
@@ -36,6 +39,29 @@ class Resource implements JsonSerializable
         }
 
         return new $this::$model();
+    }
+
+    protected function paginator($items, $total, $perPage, $currentPage, $options)
+    {
+        return Container::getInstance()->makeWith(LengthAwarePaginator::class, compact(
+            'items', 'total', 'perPage', 'currentPage', 'options'
+        ));
+    }
+
+    public function paginate($builder, $perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    {
+        $page = $page ?: Paginator::resolveCurrentPage($pageName);
+
+        $perPage = $perPage ?: $builder->getModel()->getPerPage();
+
+        $results = ($total = $builder->toBase()->getCountForPagination())
+                                    ? $builder->forPage($page, $perPage)->get($columns)
+                                    : $builder->getModel()->newCollection();
+
+        return $this->paginator($results, $total, $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => $pageName,
+        ]);
     }
 
     public function render()

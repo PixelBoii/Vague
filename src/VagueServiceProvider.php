@@ -4,10 +4,6 @@ namespace PixelBoii\Vague;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\UrlWindow;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Gate;
 
 use PixelBoii\Vague\Console\{InstallPackage, MakeResource};
@@ -27,7 +23,6 @@ class VagueServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->registerViews();
         $this->registerRoutes();
-        $this->registerLengthAwarePaginator();
 
         if (Features::enabled('permissions')) {
             $this->registerPermissions();
@@ -71,69 +66,6 @@ class VagueServiceProvider extends ServiceProvider
             'prefix' => config('vague.prefix'),
             'middleware' => [...config('vague.middleware'), HandleInertiaRequests::class],
         ];
-    }
-
-    protected function registerLengthAwarePaginator()
-    {
-        $this->app->bind(LengthAwarePaginator::class, function ($app, $values) {
-            return new class(...array_values($values)) extends LengthAwarePaginator {
-                public function toArray()
-                {
-                    return [
-                        'data' => $this->items->toArray(),
-                        'links' => $this->links(),
-                    ];
-                }
-
-                public function items()
-                {
-                    return $this->items;
-                }
-
-                public function links($view = null, $data = [])
-                {
-                    $this->appends(Request::all());
-
-                    $window = UrlWindow::make($this);
-
-                    $elements = array_filter([
-                        $window['first'],
-                        is_array($window['slider']) ? '...' : null,
-                        $window['slider'],
-                        is_array($window['last']) ? '...' : null,
-                        $window['last'],
-                    ]);
-
-                    return Collection::make($elements)->flatMap(function ($item) {
-                        if (is_array($item)) {
-                            return Collection::make($item)->map(function ($url, $page) {
-                                return [
-                                    'url' => $url,
-                                    'label' => $page,
-                                    'active' => $this->currentPage() === $page,
-                                ];
-                            });
-                        } else {
-                            return [
-                                [
-                                    'url' => null,
-                                    'label' => '...',
-                                    'active' => false,
-                                ],
-                            ];
-                        }
-                    })->prepend([
-                        'url' => $this->previousPageUrl(),
-                        'label' => 'Previous',
-                        'active' => false,
-                    ])->push([
-                        'url' => $this->nextPageUrl(),
-                        'label' => 'Next',
-                        'active' => false,
-                    ]);
-                }
-            };
-        });
     }
 
     protected function registerPermissions()

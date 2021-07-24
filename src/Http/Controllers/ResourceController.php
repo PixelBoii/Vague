@@ -23,7 +23,7 @@ class ResourceController extends Controller
         $sortOrder = $request->get('order') ?? 'DESC';
 
         $query = $resource->model()->orderBy($sortBy, $sortOrder)->where(fn($query) => $resource->search($query, $search));
-        $results = $query->paginate();
+        $results = $resource->paginate($query);
 
         return Inertia::render('Resource', [
             'filters' => $request->all('search', 'order', 'sortBy'),
