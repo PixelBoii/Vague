@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model:show="open">
+    <Modal v-model:show="open" :enabledSlots="['content']">
         <template #content>
             <div class="border-b border-gray-300 w-full flex items-center space-x-2 text-gray-700 mb-6">
                 <SearchIcon class="h-6 w-6 fill-current" />
@@ -7,11 +7,11 @@
             </div>
 
             <div class="w-full overflow-y-auto quick-search-results space-y-6">
-                <div v-if="quickSearch.length == 0">
+                <div v-if="results.length == 0">
                     <span class="text-gray-700 font-medium"> No results found </span>
                 </div>
 
-                <div class="space-y-2" v-for="resource in quickSearch" :key="resource.name">
+                <div class="space-y-2" v-for="resource in results" :key="resource.name">
                     <p class="font-semibold text-gray-700"> {{ resource.name }} </p>
 
                     <div class="rounded-md overflow-hidden border border-gray-300">
@@ -25,9 +25,6 @@
                     </div>
                 </div>
             </div>
-        </template>
-
-        <template #footer>
         </template>
     </Modal>
 
@@ -47,7 +44,8 @@
 </template>
 
 <script>
-import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
+import { usePage } from '@inertiajs/inertia-vue3';
 import { PlusIcon, SearchIcon, ChevronRightIcon } from '@heroicons/vue/solid';
 import Modal from './Modal.vue';
 
@@ -62,21 +60,16 @@ export default {
     data() {
         return {
             open: false,
-            search: ''
-        }
-    },
-    computed: {
-        quickSearch() {
-            return this.$page.props.quickSearch?.results;
+            search: '',
+            results: [],
         }
     },
     watch: {
-        search: function(search) {
-            Inertia.reload({
-                data: {
-                    quickSearch: search
-                }
-            });
+        search: 'fetchResults',
+        open: function (open) {
+            if (open) {
+                this.fetchResults();
+            }
         }
     },
     mounted() {
@@ -87,6 +80,20 @@ export default {
                 this.open = true;
             }
         });
+    },
+    methods: {
+        async fetchResults(search) {
+            var req = await axios.post(`/${this.config.prefix}/dashboard/search`, {
+                query: search
+            });
+
+            this.results = req.data;
+        }
+    },
+    computed: {
+        config() {
+            return usePage().props.value.config;
+        }
     }
 }
 </script>

@@ -9,6 +9,7 @@ use PixelBoii\Vague\Http\Controllers\ElementController;
 Route::redirect('/', '/' . config('vague.prefix') . '/dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('vague.dashboard.index');
+Route::post('/dashboard/search', [DashboardController::class, 'search'])->name('vague.dashboard.search');
 
 Route::get('/resource/{resource}', [ResourceController::class, 'index'])->name('vague.resource.index');
 Route::post('/resource/{resource}/search', [ResourceController::class, 'search'])->name('vague.resource.search');
