@@ -11,6 +11,7 @@ use PixelBoii\Vague\Paginators\LengthAwarePaginator;
 use JsonSerializable;
 use ReflectionObject;
 use ReflectionProperty;
+use Exception;
 
 class Resource implements JsonSerializable
 {
@@ -121,15 +122,38 @@ class Resource implements JsonSerializable
         return Element::recordForm($this);
     }
 
+    public function getSearchableFields()
+    {
+        $fields = $this->resolveFields();
+
+        if (isset($this::$searchable) && $this::$searchable != []) {
+            $fields = array_map(function($column) use($fields) {
+                foreach ($fields as $field) {
+                    if ($field->column == $column) {
+                        return $field;
+                    }
+
+                    if ($field->casts == 'relationship' && strtolower($field->name) == $column) {
+                        return $field;
+                    }
+                }
+
+                throw new Exception('Searchable field ' . $column . ' not found');
+            }, $this::$searchable);
+        }
+
+        return $fields;
+    }
+
     public function search($query, $search)
     {
-        foreach ($this->resolveFields() as $field) {
+        foreach ($this->getSearchableFields() as $field) {
             if ($field->casts == 'relationship') {
                 if (!method_exists($this->model(), $field->relationship->target()::slug())) {
                     $this->model()->resolveRelationUsing($field->relationship->target()::slug(), fn($model) => $field->relationship->buildRelationship($model));
                 }
 
-                $target_fields = array_values(array_filter($field->relationship->target()->resolveFields(), fn($field) => $field->casts != 'relationship'));
+                $target_fields = array_values(array_filter($field->relationship->target()->getSearchableFields(), fn($field) => $field->casts != 'relationship'));
 
                 // Ignore relationships without any defined fields
                 if (count($target_fields) > 0) {
