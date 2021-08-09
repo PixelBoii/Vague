@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use Illuminate\Pagination\Paginator;
 use PixelBoii\Vague\Paginators\LengthAwarePaginator;
+use PixelBoii\Vague\Features;
 
 use JsonSerializable;
 use ReflectionObject;
@@ -19,11 +20,53 @@ class Resource implements JsonSerializable
     public static $searchable;
     public static $name;
 
+    public static $authorization;
+
     public $record;
 
     public static function slug()
     {
         return class_basename(new static());
+    }
+
+    public function authorization()
+    {
+        $authorization = $this::$authorization;
+
+        if (is_null($authorization)) {
+            foreach (['view', 'create', 'update', 'delete'] as $permission) {
+                $authorization[$permission . ' ' . strtolower($this->name())] = [$permission];
+            }
+
+            $authorization[strtolower($this->name())] = ['*'];
+        }
+
+        return $authorization;
+    }
+
+    public function authorize($operation = null, $user = null)
+    {
+        if (!Features::enabled('permissions')) {
+            return true;
+        }
+
+        if (is_null($user)) {
+            $user = request()->user();
+        }
+
+        foreach ($this->authorization() as $permission => $operations) {
+            if ($user->hasPermissions([$permission])) {
+                if (isset($operation)) {
+                    if (collect($operations)->contains(fn($criteria) => $operation == $criteria || $criteria == '*')) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function name()
@@ -275,18 +318,14 @@ class Resource implements JsonSerializable
 
     public function usersWithAccess()
     {
-        $rolesWithAccess = array_filter(Vague::$roles, function($role) {
-            foreach ($role['permissions'] as $permission) {
-                if ($permission == '*' || $permission == 'view ' . $this->slug()) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
+        $rolesWithAccess = collect(Vague::$roles)->filter(function($role) {
+            return collect(array_keys($this->authorization()))->contains(function($requiredPermission) use($role) {
+                return collect($role['permissions'])->contains(fn($permission) => $permission == $requiredPermission || $permission == '*');
+            });
+        })->map(fn($role) => $role['name']);
 
         return config('vague.user.resource')::make()->model()->whereHas('roles', function($q) use($rolesWithAccess) {
-            $q->whereIn('role', array_map(fn($role) => $role['name'], $rolesWithAccess));
+            $q->whereIn('role', $rolesWithAccess);
         })->get();
     }
 

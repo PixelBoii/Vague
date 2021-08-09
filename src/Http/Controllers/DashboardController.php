@@ -11,25 +11,19 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Dashboard', [
-            'resources' => array_reduce(config('vague.resources'), function($resources, $resource) use($request) {
-                $resource = $resource::make();
-
-                if ($request->user()->can('view ' . strtolower($resource->name()))) {
-                    array_push($resources, [
-                        'name' => $resource->name(),
-                        'record_count' => $resource->model()->count(),
-                        'slug' => Str::lower($resource->slug())
-                    ]);
-                }
-
-                return $resources;
-            }, [])
+            'resources' => $request->user()->resources('view')->map(function($resource) {
+                return [
+                    'name' => $resource->name(),
+                    'record_count' => $resource->model()->count(),
+                    'slug' => Str::lower($resource->slug())
+                ];
+            })
         ]);
     }
 
     public function search(Request $request)
     {
-        return array_reduce(config('vague.resources'), function($resources, $resource) use($request) {
+        return $request->user()->resources('view')->reduce(function($resources, $resource) use($request) {
             $search = $request->get('query') ?? '';
 
             $records = $resource::make()->model()->where(function($query) use($search, $resource) {

@@ -66,10 +66,22 @@ trait HasPermissions
         return false;
     }
 
+    public function hasPermissions($requirements)
+    {
+        return collect($requirements)->contains(function($criteria) {
+            return $this->hasDirectPermission($criteria) || $this->hasIndirectPermission($criteria);
+        });
+    }
+
     public function hasRoles($requirements)
     {
         return collect($requirements)->diff(
             $this->roles->map(fn($role) => $role['role'])
         )->isEmpty();
+    }
+
+    public function resources($operation = null)
+    {
+        return collect(config('vague.resources'))->map(fn($resource) => $resource::make())->filter(fn($resource) => $resource->authorize($operation));
     }
 }

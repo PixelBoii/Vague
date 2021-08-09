@@ -23,10 +23,6 @@ class VagueServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->registerViews();
         $this->registerRoutes();
-
-        if (Features::enabled('permissions')) {
-            $this->registerPermissions();
-        }
     }
 
     protected function registerViews()
@@ -66,14 +62,5 @@ class VagueServiceProvider extends ServiceProvider
             'prefix' => config('vague.prefix'),
             'middleware' => [...config('vague.middleware'), HandleInertiaRequests::class],
         ];
-    }
-
-    protected function registerPermissions()
-    {
-        Gate::before(function ($user, $ability) {
-            $user->load('permissions', 'roles');
-
-            return $user->hasDirectPermission($ability) || $user->hasIndirectPermission($ability);
-        });
     }
 }
