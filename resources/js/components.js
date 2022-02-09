@@ -1,3 +1,4 @@
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import ResourceBuilder from './Components/ResourceBuilder';
 import PrimaryButton from './Components/PrimaryButton';
 import SecondaryButton from './Components/SecondaryButton';
@@ -11,5 +12,7 @@ export default {
         app.component('SecondaryButton', SecondaryButton);
         app.component('DangerousButton', DangerousButton);
         app.component('Input', Input);
+        app.component('InertiaHead', Head);
+        app.component('InertiaLink', Link);
 	}
 };
