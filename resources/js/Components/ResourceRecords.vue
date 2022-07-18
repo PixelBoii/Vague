@@ -49,7 +49,7 @@
         <Table>
             <template v-slot:thead>
                 <th scope="col" class="relative px-6 py-3">
-                    <span class="sr-only">Select</span>
+                    <CheckCircleIcon class="stroke-current h-6 w-6" :class="[records.data.every(e => e.selected) ? 'text-green-500' : 'text-gray-400']" @click="toggleSelectAll" />
                 </th>
 
                 <th scope="col" v-for="field in fields" :key="`field-${field.column}`" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="handleSortClick(field.column)">
@@ -214,6 +214,19 @@ export default {
         },
         post(action) {
             this.form.post(`/${this.config.prefix}/resource/${this.slug}/actions/${action}`);
+        },
+        toggleSelectAll() {
+            if (this.records.data.every(record => record.selected)) {
+                this.records.data = this.records.data.map(record => {
+                    record.selected = false;
+                    return record;
+                });
+            } else {
+                this.records.data = this.records.data.map(record => {
+                    record.selected = true;
+                    return record;
+                });
+            }
         }
     }
 }
