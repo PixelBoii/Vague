@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import Input from './Input';
-import Label from './Label';
-import RelationshipField from './RelationshipField';
+import Input from './Input.vue';
+import Label from './Label.vue';
+import RelationshipField from './RelationshipField.vue';
 
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, SelectorIcon } from '@heroicons/vue/solid'

@@ -1,0 +1,52 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app.5208b4a6.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Dashboard.vue",
+      "resources/js/Pages/Record.vue",
+      "resources/js/Pages/Resource.vue"
+    ],
+    "css": [
+      "assets/app.ad1bdc4e.css"
+    ]
+  },
+  "resources/js/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard.f6826440.js",
+    "src": "resources/js/Pages/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Record.vue": {
+    "file": "assets/Record.21400747.js",
+    "src": "resources/js/Pages/Record.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/Resource.vue": {
+    "file": "assets/Resource.e89a7317.js",
+    "src": "resources/js/Pages/Resource.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js\\app.css": {
+    "file": "assets/app.ad1bdc4e.css",
+    "src": "resources/js\\app.css"
+  },
+  "resources/css\\app.css": {
+    "file": "assets/app.e209ad47.css",
+    "src": "resources/css\\app.css"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.e209ad47.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  }
+}

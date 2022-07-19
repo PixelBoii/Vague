@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import NavSidebarItem from '../Components/NavSidebarItem';
+import NavSidebarItem from '../Components/NavSidebarItem.vue';
 import { usePage } from '@inertiajs/inertia-vue3'
 
 export default {

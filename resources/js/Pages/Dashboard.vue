@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ResourceCard from '../Components/ResourceCard';
+import ResourceCard from '../Components/ResourceCard.vue';
 
 export default {
     components: {

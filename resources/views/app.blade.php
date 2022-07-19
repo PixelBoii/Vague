@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link href="{{ mix('css/app.css', '/vendor/vague') }}" rel="stylesheet" />    
-        <script src="{{ mix('js/app.js', '/vendor/vague') }}" defer></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'], 'vendor/vague')
     </head>
 
     <body class="bg-gray-100">

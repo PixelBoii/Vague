@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import ResourceRecords from '../Components/ResourceRecords';
+import ResourceRecords from '../Components/ResourceRecords.vue';
 import DatabaseIcon from '@heroicons/vue/outline/DatabaseIcon';
 
 export default {

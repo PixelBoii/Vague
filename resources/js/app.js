@@ -1,18 +1,19 @@
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-import BaseLayout from './Layouts/Base';
-import components from './components';
+import BaseLayout from './Layouts/Base.vue';
+import components from './components.js';
 
 InertiaProgress.init();
 
 createInertiaApp({
-    resolve: (name) => {
-        var page = require(`./Pages/${name}.vue`).default;
+    resolve: async (name) => {
+        let page = await resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
 
         return {
-            ...page,
+            ...page.default,
             layout: BaseLayout
         };
     },

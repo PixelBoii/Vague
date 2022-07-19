@@ -1,1 +1,0 @@
-(self.webpackChunk=self.webpackChunk||[]).push([[47],{8047:(e,r,c)=>{"use strict";c.r(r),c.d(r,{default:()=>n});var d=c(5166),a={class:"hidden sm:block","aria-hidden":"true"},s=(0,d.createVNode)("div",{class:"py-10"},[(0,d.createVNode)("div",{class:"border-t border-gray-200"})],-1);const t={render:function(e,r){return(0,d.openBlock)(),(0,d.createBlock)("div",a,[s])}},n=t}}]);

@@ -52,8 +52,8 @@ import { useForm } from '@inertiajs/inertia-vue3';
 import { DialogTitle } from '@headlessui/vue';
 import { ExclamationIcon, TrashIcon } from '@heroicons/vue/outline';
 
-import EditField from './EditField';
-import ResourceAction from './ResourceAction';
+import EditField from './EditField.vue';
+import ResourceAction from './ResourceAction.vue';
 import Modal from './Modal.vue';
 
 export default {

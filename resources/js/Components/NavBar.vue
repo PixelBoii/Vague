@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import QuickSearch from './QuickSearch';
+import QuickSearch from './QuickSearch.vue';
 
 export default {
     components: {

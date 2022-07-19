@@ -99,13 +99,13 @@
 </template>
 
 <script>
-import Table from './Table';
-import Pagination from './Pagination';
-import Modal from './Modal';
-import PrimaryButton from './PrimaryButton';
-import Input from './Input';
-import Label from './Label';
-import EditField from './EditField';
+import Table from './Table.vue';
+import Pagination from './Pagination.vue';
+import Modal from './Modal.vue';
+import PrimaryButton from './PrimaryButton.vue';
+import Input from './Input.vue';
+import Label from './Label.vue';
+import EditField from './EditField.vue';
 
 import CheckCircleIcon from '@heroicons/vue/outline/CheckCircleIcon';
 import { Menu, MenuButton, MenuItem, MenuItems, DialogTitle } from '@headlessui/vue';

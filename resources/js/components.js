@@ -1,9 +1,9 @@
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import ResourceBuilder from './Components/ResourceBuilder';
-import PrimaryButton from './Components/PrimaryButton';
-import SecondaryButton from './Components/SecondaryButton';
-import DangerousButton from './Components/DangerousButton';
-import Input from './Components/Input';
+import ResourceBuilder from './Components/ResourceBuilder.vue';
+import PrimaryButton from './Components/PrimaryButton.vue';
+import SecondaryButton from './Components/SecondaryButton.vue';
+import DangerousButton from './Components/DangerousButton.vue';
+import Input from './Components/Input.vue';
 
 export default {
 	install (app) {
