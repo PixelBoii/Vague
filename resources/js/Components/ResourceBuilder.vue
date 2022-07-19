@@ -20,7 +20,9 @@ export default {
                 return content;
             } else {
                 if (el.import) {
-                    component = defineAsyncComponent(() => import('@/Components/' + el.component + '.vue'));
+                    let components = import.meta.glob('./*.vue');
+
+                    component = defineAsyncComponent(components[`./${el.component}.vue`]);
                 }
 
                 return h(
