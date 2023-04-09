@@ -60,7 +60,7 @@ class VagueServiceProvider extends ServiceProvider
     {
         return [
             'prefix' => config('vague.prefix'),
-            'middleware' => [...config('vague.middleware'), HandleInertiaRequests::class],
+            'middleware' => [...config('vague.middleware') ?? [], HandleInertiaRequests::class],
         ];
     }
 }
