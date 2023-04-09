@@ -1,12 +1,9 @@
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3'
-import { InertiaProgress } from '@inertiajs/progress';
+import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 import BaseLayout from './Layouts/Base.vue';
 import components from './components.js';
-
-InertiaProgress.init();
 
 createInertiaApp({
     resolve: async (name) => {
@@ -17,7 +14,10 @@ createInertiaApp({
             layout: BaseLayout
         };
     },
-    setup({ el, app, props, plugin }) {
-        var app = createApp({ render: () => h(app, props) }).use(plugin).use(components).mount(el);
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(components)
+            .mount(el);
     },
 })

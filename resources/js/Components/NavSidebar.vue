@@ -28,7 +28,7 @@
 
 <script>
 import NavSidebarItem from '../Components/NavSidebarItem.vue';
-import { usePage } from '@inertiajs/inertia-vue3'
+import { usePage } from '@inertiajs/vue3'
 
 export default {
     components: {
@@ -36,13 +36,13 @@ export default {
     },
     computed: {
         user() {
-            return usePage().props.value.auth.user;
+            return usePage().props.auth.user;
         },
         user_summary() {
-            return usePage().props.value.auth.summary;
+            return usePage().props.auth.summary;
         },
         config() {
-            return usePage().props.value.config;
+            return usePage().props.config;
         }
     }
 }

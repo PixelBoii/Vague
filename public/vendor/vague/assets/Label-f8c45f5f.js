@@ -1,0 +1,1 @@
+import{_ as t,o,c as s,h as c}from"./app-820b667c.js";const a={},r={class:"block text-sm font-medium text-gray-700"};function n(e,l){return o(),s("label",r,[c(e.$slots,"default")])}const f=t(a,[["render",n]]);export{f as default};

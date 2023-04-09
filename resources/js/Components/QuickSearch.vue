@@ -45,7 +45,7 @@
 
 <script>
 import axios from 'axios';
-import { usePage } from '@inertiajs/inertia-vue3';
+import { usePage } from '@inertiajs/vue3';
 import { PlusIcon, SearchIcon, ChevronRightIcon } from '@heroicons/vue/solid';
 import Modal from './Modal.vue';
 
@@ -92,7 +92,7 @@ export default {
     },
     computed: {
         config() {
-            return usePage().props.value.config;
+            return usePage().props.config;
         }
     }
 }

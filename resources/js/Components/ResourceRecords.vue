@@ -109,7 +109,7 @@ import EditField from './EditField.vue';
 
 import CheckCircleIcon from '@heroicons/vue/outline/CheckCircleIcon';
 import { Menu, MenuButton, MenuItem, MenuItems, DialogTitle } from '@headlessui/vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { ChevronDownIcon } from '@heroicons/vue/solid';
 import { debounce, pickBy } from 'lodash';
 
@@ -153,7 +153,7 @@ export default {
             return this.fields.filter(e => e.fillable);
         },
         config() {
-            return usePage().props.value.config;
+            return usePage().props.config;
         }
     },
     components: {

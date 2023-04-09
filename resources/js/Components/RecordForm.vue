@@ -48,7 +48,7 @@
 
 <script>
 import { reactive } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { DialogTitle } from '@headlessui/vue';
 import { ExclamationIcon, TrashIcon } from '@heroicons/vue/outline';
 

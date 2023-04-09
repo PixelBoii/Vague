@@ -1,8 +1,169 @@
 {
-  "resources/js/app.js": {
-    "file": "assets/app.740ff338.js",
-    "src": "resources/js/app.js",
+  "_RelationshipField-323721c0.js": {
+    "file": "assets/RelationshipField-323721c0.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true
+  },
+  "_ResourceRecords-e693987c.js": {
+    "file": "assets/ResourceRecords-e693987c.js",
+    "imports": [
+      "resources/js/Components/Table.vue",
+      "resources/js/Components/Pagination.vue",
+      "resources/js/app.js",
+      "resources/js/Components/Label.vue",
+      "resources/js/Components/EditField.vue"
+    ],
+    "isDynamicEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-07a63b30.css",
     "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/js/Components/Breadcrumbs.vue": {
+    "file": "assets/Breadcrumbs-f887369a.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/Breadcrumbs.vue"
+  },
+  "resources/js/Components/EditField.vue": {
+    "file": "assets/EditField-08bd2abb.js",
+    "imports": [
+      "resources/js/app.js",
+      "resources/js/Components/Label.vue",
+      "_RelationshipField-323721c0.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/EditField.vue"
+  },
+  "resources/js/Components/FormLayout.vue": {
+    "file": "assets/FormLayout-4c2dd05f.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/FormLayout.vue"
+  },
+  "resources/js/Components/FormLayoutSeparator.vue": {
+    "file": "assets/FormLayoutSeparator-e44f7450.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/FormLayoutSeparator.vue"
+  },
+  "resources/js/Components/Label.vue": {
+    "file": "assets/Label-f8c45f5f.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/Label.vue"
+  },
+  "resources/js/Components/Pagination.vue": {
+    "file": "assets/Pagination-eb6768c5.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/Pagination.vue"
+  },
+  "resources/js/Components/RecordForm.vue": {
+    "file": "assets/RecordForm-45f43b5d.js",
+    "imports": [
+      "resources/js/app.js",
+      "resources/js/Components/EditField.vue",
+      "resources/js/Components/ResourceAction.vue",
+      "resources/js/Components/Label.vue",
+      "_RelationshipField-323721c0.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/RecordForm.vue"
+  },
+  "resources/js/Components/ResourceAction.vue": {
+    "file": "assets/ResourceAction-50d9e02a.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/ResourceAction.vue"
+  },
+  "resources/js/Components/ResourceCard.vue": {
+    "file": "assets/ResourceCard-34716f53.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/ResourceCard.vue"
+  },
+  "resources/js/Components/Select.vue": {
+    "file": "assets/Select-e8a38e45.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/Select.vue"
+  },
+  "resources/js/Components/StackedList.vue": {
+    "file": "assets/StackedList-fffb1222.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/StackedList.vue"
+  },
+  "resources/js/Components/Table.vue": {
+    "file": "assets/Table-933cbb49.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Components/Table.vue"
+  },
+  "resources/js/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard-5bf60f9d.js",
+    "imports": [
+      "resources/js/Components/ResourceCard.vue",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Dashboard.vue"
+  },
+  "resources/js/Pages/Record.vue": {
+    "file": "assets/Record-c149dfdf.js",
+    "imports": [
+      "resources/js/Components/Breadcrumbs.vue",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Record.vue"
+  },
+  "resources/js/Pages/Resource.vue": {
+    "file": "assets/Resource-6b119355.js",
+    "imports": [
+      "_ResourceRecords-e693987c.js",
+      "resources/js/app.js",
+      "resources/js/Components/Table.vue",
+      "resources/js/Components/Pagination.vue",
+      "resources/js/Components/Label.vue",
+      "resources/js/Components/EditField.vue",
+      "_RelationshipField-323721c0.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Resource.vue"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-976f1161.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.js": {
+    "css": [
+      "assets/app-976f1161.css"
+    ],
     "dynamicImports": [
       "resources/js/Components/Breadcrumbs.vue",
       "resources/js/Components/EditField.vue",
@@ -11,10 +172,10 @@
       "resources/js/Components/Label.vue",
       "resources/js/Components/Pagination.vue",
       "resources/js/Components/RecordForm.vue",
-      "_RelationshipField.e52b2c69.js",
+      "_RelationshipField-323721c0.js",
       "resources/js/Components/ResourceAction.vue",
       "resources/js/Components/ResourceCard.vue",
-      "resources/js/Components/ResourceRecords.vue",
+      "_ResourceRecords-e693987c.js",
       "resources/js/Components/Select.vue",
       "resources/js/Components/StackedList.vue",
       "resources/js/Components/Table.vue",
@@ -22,175 +183,8 @@
       "resources/js/Pages/Record.vue",
       "resources/js/Pages/Resource.vue"
     ],
-    "css": [
-      "assets/app.ad1bdc4e.css"
-    ]
-  },
-  "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.4f9b2568.js",
-    "src": "resources/js/Pages/Dashboard.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Components/ResourceCard.vue",
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/ResourceCard.vue": {
-    "file": "assets/ResourceCard.5afef529.js",
-    "src": "resources/js/Components/ResourceCard.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Pages/Record.vue": {
-    "file": "assets/Record.97a4ba46.js",
-    "src": "resources/js/Pages/Record.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Components/Breadcrumbs.vue",
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/Breadcrumbs.vue": {
-    "file": "assets/Breadcrumbs.32082ef8.js",
-    "src": "resources/js/Components/Breadcrumbs.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Pages/Resource.vue": {
-    "file": "assets/Resource.30eb93fd.js",
-    "src": "resources/js/Pages/Resource.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Components/ResourceRecords.vue",
-      "resources/js/app.js",
-      "resources/js/Components/Table.vue",
-      "resources/js/Components/Pagination.vue",
-      "resources/js/Components/Label.vue",
-      "resources/js/Components/EditField.vue",
-      "_RelationshipField.e52b2c69.js"
-    ]
-  },
-  "resources/js/Components/ResourceRecords.vue": {
-    "file": "assets/ResourceRecords.09662821.js",
-    "src": "resources/js/Components/ResourceRecords.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/Components/Table.vue",
-      "resources/js/Components/Pagination.vue",
-      "resources/js/app.js",
-      "resources/js/Components/Label.vue",
-      "resources/js/Components/EditField.vue",
-      "_RelationshipField.e52b2c69.js"
-    ]
-  },
-  "resources/js/Components/Table.vue": {
-    "file": "assets/Table.601c8eec.js",
-    "src": "resources/js/Components/Table.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/Pagination.vue": {
-    "file": "assets/Pagination.a08677a7.js",
-    "src": "resources/js/Components/Pagination.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/Label.vue": {
-    "file": "assets/Label.23699fe2.js",
-    "src": "resources/js/Components/Label.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/EditField.vue": {
-    "file": "assets/EditField.68d23f81.js",
-    "src": "resources/js/Components/EditField.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "resources/js/Components/Label.vue",
-      "_RelationshipField.e52b2c69.js"
-    ]
-  },
-  "_RelationshipField.e52b2c69.js": {
-    "file": "assets/RelationshipField.e52b2c69.js",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/FormLayout.vue": {
-    "file": "assets/FormLayout.00dd3d70.js",
-    "src": "resources/js/Components/FormLayout.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/FormLayoutSeparator.vue": {
-    "file": "assets/FormLayoutSeparator.120aa72c.js",
-    "src": "resources/js/Components/FormLayoutSeparator.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/RecordForm.vue": {
-    "file": "assets/RecordForm.37001074.js",
-    "src": "resources/js/Components/RecordForm.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "resources/js/Components/EditField.vue",
-      "resources/js/Components/ResourceAction.vue",
-      "resources/js/Components/Label.vue",
-      "_RelationshipField.e52b2c69.js"
-    ]
-  },
-  "resources/js/Components/ResourceAction.vue": {
-    "file": "assets/ResourceAction.99453aa5.js",
-    "src": "resources/js/Components/ResourceAction.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/Select.vue": {
-    "file": "assets/Select.90c2d39c.js",
-    "src": "resources/js/Components/Select.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Components/StackedList.vue": {
-    "file": "assets/StackedList.aace734e.js",
-    "src": "resources/js/Components/StackedList.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js\\app.css": {
-    "file": "assets/app.ad1bdc4e.css",
-    "src": "resources/js\\app.css"
-  },
-  "resources/css\\app.css": {
-    "file": "assets/app.07a63b30.css",
-    "src": "resources/css\\app.css"
-  },
-  "resources/css/app.css": {
-    "file": "assets/app.07a63b30.css",
-    "src": "resources/css/app.css",
-    "isEntry": true
+    "file": "assets/app-820b667c.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
   }
 }

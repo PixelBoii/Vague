@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import ResourceBuilder from './Components/ResourceBuilder.vue';
 import PrimaryButton from './Components/PrimaryButton.vue';
 import SecondaryButton from './Components/SecondaryButton.vue';
