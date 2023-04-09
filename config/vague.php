@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleVagueRequest;
-use Pixel\Vague\Features;
+use PixelBoii\Vague\Features;
 
 return [
     'resources' => [
